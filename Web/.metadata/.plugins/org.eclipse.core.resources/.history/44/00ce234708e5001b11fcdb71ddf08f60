@@ -1,0 +1,41 @@
+package diego.newsproject;
+
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
+import org.springframework.context.annotation.Bean;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+@SpringBootApplication
+public class NewsprojectApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(NewsprojectApplication.class, args);
+	}
+
+	
+	@Bean
+	public DataSource datasource() {
+		HikariDataSource dataSource = new HikariDataSource();
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setJdbcUrl("jdbc:mysql://localhost:3310/newsproject");
+		dataSource.setUsername("admin");
+		dataSource.setPassword("admin");
+		return dataSource;
+	}
+	
+	@Bean
+	public HibernatePropertiesCustomizer hibernateProperties() {
+		return new HibernatePropertiesCustomizer() {
+			@Override
+			public void customize(Map<String, Object> hibernateProperties) {
+				hibernateProperties.put("hibernate.hbm2ddl.auto", "validate");
+			}
+		};
+	}
+}

@@ -1,0 +1,19 @@
+package entities;
+
+import java.time.LocalDate;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "articoli")
+public class Articoli {
+	public long id;
+	public String autore;
+	public String titolo;
+	public String testo;
+	public LocalDate data;
+	public boolean stato;
+	public double predizione
+
+}

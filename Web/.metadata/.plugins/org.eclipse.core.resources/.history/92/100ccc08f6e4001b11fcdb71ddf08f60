@@ -1,0 +1,25 @@
+package diego.newsproject;
+
+import javax.sql.DataSource;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+@SpringBootApplication
+public class NewsprojectApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(NewsprojectApplication.class, args);
+	}
+
+	
+	public DataSource datasource() {
+		HikariDataSource dataSource = new HikariDataSource();
+		dataSource.setJdbcUrl("anUrl");
+		dataSource.setUsername("admin");
+		dataSource.setPassword("password");
+		return dataSource;
+	}
+}

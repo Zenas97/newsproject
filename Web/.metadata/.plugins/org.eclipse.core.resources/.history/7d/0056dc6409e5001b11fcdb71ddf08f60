@@ -1,0 +1,14 @@
+package entities;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "articoli")
+public class Articoli {
+	public long id;
+	public String titolo
+	public String autore;
+	public String testo;
+
+}

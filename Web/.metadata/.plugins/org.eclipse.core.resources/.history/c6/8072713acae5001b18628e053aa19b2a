@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project app</title>
+        <style>
+            .form_input{
+                margin-top: 10px;
+            }
+
+            #submit_button{
+                margin-top: 20px;
+                width: 100px;
+                height: 25px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1> Hello App!!!</h1>
+        <form method="POST" action="">
+            <div class = "form_input"> 
+                <div>Titolo Articolo  </div>
+                <input type="text" name="titolo" value=""/>
+                <span> <?php  echo $parameters["titolo"]; ?> </span>
+            </div>
+            <div class = "form_input"> 
+                <div> Autore </div>
+                <input type="text" name="autore" value= ""/>
+                <span>  </span>
+            </div>
+            <div class = "form_input"> 
+                <div> Testo articolo </div>
+                <textarea name="testo" rows="25" cols="85"> </textarea>
+                <span> <?php  echo $parameters["testo"]; ?> </span>
+            </div>
+            <div class = "form_input">
+                <div> Data </div>
+                <input type="date" name="data" value=""/>
+                <span> </span>
+            </div>
+            
+            <div class = "form_input">
+                <input type="submit" value="send" id="submit_button"/>
+            </div>
+
+        </form>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+package diego.newsproject;
+
+import java.util.ArrayList;
+public class ResponseObject {
+
+	private String messaggio;
+	private ArrayList<String> errori;
+}

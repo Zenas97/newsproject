@@ -1,0 +1,3 @@
+package diego.newsproject;
+
+import org.springframework.data.repository.CrudRepository;

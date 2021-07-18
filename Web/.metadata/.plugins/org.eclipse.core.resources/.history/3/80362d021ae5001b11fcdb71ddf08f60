@@ -1,0 +1,30 @@
+package diego.newsproject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+public class ResponseObject {
+
+	private String messaggio;
+	private HashMap<String,String> errori;
+	
+	public ResponseObject() {
+		super();
+	}
+	
+	public String getMessaggio() {
+		return messaggio;
+	}
+	public void setMessaggio(String messaggio) {
+		this.messaggio = messaggio;
+	}
+
+	public HashMap<String, String> getErrori() {
+		return errori;
+	}
+
+	public void setErrori(HashMap<String, String> errori) {
+		this.errori = errori;
+	}
+	
+	
+}

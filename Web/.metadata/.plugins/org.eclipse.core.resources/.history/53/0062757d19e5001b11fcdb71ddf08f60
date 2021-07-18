@@ -1,0 +1,7 @@
+package diego.newsproject;
+
+public class ResponseObject {
+
+	private String messaggio;
+	private ArrayList<String> errori;
+}

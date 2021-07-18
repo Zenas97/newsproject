@@ -1,0 +1,20 @@
+Completare la validazione con Exception Handler e tutto l'ambaradan, validare per not null ed altre cose.
+
+
+Una volta "completato" il backend semplice creare la pagina JS(Ereditando quella che ho già) per fare la richiesta al Server e gestirle di accordo, l'idea che questo non deve cambiare dal progetto originale
+
+
+Dockerizzare l'app con le giuste impostazioni per loggarsi alla rete interna di docker.
+
+
+Testare :DDDD
+
+
+Una volta aver fatto tutto ciò infine decidere se continuare con il resto del progetto oppure finirlo, in ogni caso così è già interessante perchè molto più pulito bello, ma sopratutto più facile da estendere.
+
+
+Idealmente posso fare due cose:
+
+	- Metto la pagina web su un webserver leggerissmo, nginx e invece spring boot lo lascio da server stand-alone
+
+	- Oppure con Spring boot includo anche la pagina web

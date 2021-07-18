@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+D:\TAPProject\Web\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2914382738.index
+2210532820.index
+3483554209.index
+3194489585.index
+1930073111.index
+1110681166.index
+2135773931.index

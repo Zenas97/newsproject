@@ -1,0 +1,9 @@
+package diego.newsproject;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ArticoliRepository extends CrudRepository<Articoli, Long> {
+
+}

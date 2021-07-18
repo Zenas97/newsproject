@@ -1,0 +1,142 @@
+version: "1.0"
+services:
+    logstash:
+        build:
+            context: ./Logstash
+        container_name: logstashContainer
+        user: root
+        depends_on:
+            - kafka
+        hostname: logstashHost
+        volumes:
+            - type: volume
+              source: logstash-volume
+              target: /usr/share/logstash/jdbc_info 
+    
+    web:
+        image: diego/myxampp:v2
+        container_name: myXamppTemp
+        hostname: webserver
+        volumes: 
+            - type: bind
+              source: ./Web/myApp
+              target: /www
+        ports:
+            - "8089:80"
+    zookeeper:
+        image: bitnami/zookeeper:latest
+        user: root
+        container_name: zookeeper-server-temp
+        hostname: zookeeperHost
+        environment: 
+            - ALLOW_ANONYMOUS_LOGIN=yes
+        volumes: 
+            - type: volume
+              source: zookeeper-volume
+              target: /bitnami/zookeeper
+ 
+    kafka:
+        image: bitnami/kafka:latest
+        container_name: kafka-server-temp
+        hostname: kafkaHost
+        user: root
+        depends_on: 
+            - zookeeper
+        environment: 
+            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeperHost:2181
+            - ALLOW_PLAINTEXT_LISTENER=yes
+        volumes: 
+            - type: volume
+              source: kafka-volume
+              target: /bitnami/kafka
+    
+    kafka-topic-creation:
+        image: bitnami/kafka:latest
+        container_name: kafka-server-temp-creation
+        hostname: kafkaHost
+        user: root
+        command: kafka-topics.sh --create --zookeeper zookeeperHost:2181 --partitions 1 --replication-factor 1 --topic newsTopic
+        depends_on: 
+            - kafka
+        environment: 
+            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeperHost:2181
+        volumes: 
+            - type: volume
+              source: kafka-volume
+              target: /bitnami/kafka  
+
+    spark-streaming:
+        image: diego/spark
+        container_name: spark-streaming
+        hostname: sparkHost
+        user: root
+        depends_on: 
+            - kafka
+            - elasticSearch
+        ports:
+            - 4040:4040
+        volumes:
+            - type: bind
+              source: ./Spark/sparkJarStreaming
+              target: /opt/bitnami/spark/program
+            - type: volume
+              source: spark-model-volume
+              target: /opt/bitnami/spark/model
+
+    spark-training:
+        image: diego/spark
+        container_name: spark-training
+        hostname: sparkHostTraining
+        user: root
+        depends_on: 
+            - kafka
+        ports:
+            - 4041:4040
+        volumes:
+            - type: bind
+              source: ./Spark/sparkJarTraining
+              target: /opt/bitnami/spark/program
+            - type: volume
+              source: spark-model-volume
+              target: /opt/bitnami/spark/model
+
+    elasticSearch:
+        image: elasticsearch:7.13.3
+        container_name: elasticsearch-container
+        hostname: elasticHost
+        user: root
+        environment: 
+            - discovery.type=single-node
+        ports:
+            - 9200:9200
+            - 9300:9300
+        volumes:
+            - type: volume
+              source: elasticsearch-volume
+              target: /usr/share/elasticsearch/data
+    kibana:
+        image: kibana:7.13.3
+        container_name: kibana-container
+        hostname: kibanaHost
+        environment: 
+            - ELASTICSEARCH_HOSTS=http://elasticHost:9200
+        depends_on: 
+            - elasticSearch
+        ports:
+            - 5601:5601
+volumes:
+    zookeeper-volume:
+        name: zookeeper-volume
+    kafka-volume:
+        name: kafka-volume
+    spark-model-volume:
+        name: spark-model-volume
+        external: true
+    elasticsearch-volume:
+        name: elasticsearch-volume
+    logstash-volume:
+        name: logstash-volume
+networks:
+    default:
+        name: my-app-network
+
