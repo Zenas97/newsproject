@@ -1,5 +1,46 @@
 version: "1.0"
 services:
+    frontend:
+        build:
+            context: ./Web
+        container_name: frontend
+        hostname: frontend
+        user: root
+        ports:
+            - 8080:8080
+    db:
+        image: diego/database:latest
+        container_name: database
+        hostname: dbHost
+        user: root
+        ports:
+            - 3310:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: qwerty
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: admin
+            MYSQL_DATABASE: newsproject
+
+        volumes:
+            - type: volume
+              source: db-volume
+              target: /var/lib/mysql
+    
+    phpmyadmin:
+        image: phpmyadmin:latest
+        container_name: phpmyadmin-container
+        hostname: phpadminHost
+        user: root
+        depends_on: 
+            - db
+        environment: 
+            - PMA_ARBITRARY=1
+            - PMA_HOST=dbHost
+            - PMA_USER=admin
+            - PMA_PASSWORD=admin
+        ports:
+            - 8082:80
+            
     logstash:
         build:
             context: ./Logstash
@@ -7,22 +48,12 @@ services:
         user: root
         depends_on:
             - kafka
+            - db
         hostname: logstashHost
         volumes:
             - type: volume
               source: logstash-volume
               target: /usr/share/logstash/jdbc_info 
-    
-    web:
-        image: diego/myxampp:v2
-        container_name: myXamppTemp
-        hostname: webserver
-        volumes: 
-            - type: bind
-              source: ./Web/myApp
-              target: /www
-        ports:
-            - "8089:80"
     zookeeper:
         image: bitnami/zookeeper:latest
         user: root
@@ -136,6 +167,8 @@ volumes:
         name: elasticsearch-volume
     logstash-volume:
         name: logstash-volume
+    db-volume:
+        name: db-volume
 networks:
     default:
         name: my-app-network
