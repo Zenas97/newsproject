@@ -110,12 +110,12 @@ services:
         depends_on: 
             - kafka
             - elasticSearch
-        command: ./spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2,org.elasticsearch:elasticsearch-spark-30_2.12:7.13.3 --class newsproject.Main /opt/bitnami/spark/program/program.jar
+        command: ./spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2,org.elasticsearch:elasticsearch-spark-30_2.12:7.13.3 --class newsproject.Main /opt/bitnami/spark/program/newsproject-0.0.1-SNAPSHOT.jar 1
         ports:
             - 4040:4040
         volumes:
             - type: bind
-              source: ./Spark/sparkJarStreaming
+              source: ./Spark/sparkJar
               target: /opt/bitnami/spark/program
             - type: volume
               source: spark-model-volume
@@ -129,12 +129,12 @@ services:
         user: root
         depends_on: 
             - kafka
-        command: ./spark-submit --class newsproject.Main /opt/bitnami/spark/program/program.jar
+        command: ./spark-submit --class newsproject.Main /opt/bitnami/spark/program/newsproject-0.0.1-SNAPSHOT.jar 0
         ports:
             - 4041:4040
         volumes:
             - type: bind
-              source: ./Spark/sparkJarTraining
+              source: ./Spark/sparkJar
               target: /opt/bitnami/spark/program
             - type: volume
               source: spark-model-volume
