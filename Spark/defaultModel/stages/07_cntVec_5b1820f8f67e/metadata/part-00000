@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.CountVectorizerModel","timestamp":1626917283527,"sparkVersion":"3.1.2","uid":"cntVec_5b1820f8f67e","paramMap":{"outputCol":"titleVector","inputCol":"titleTrigrams"},"defaultParamMap":{"binary":false,"maxDF":9.223372036854776E18,"outputCol":"cntVec_5b1820f8f67e__output","minDF":1.0,"minTF":1.0,"vocabSize":262144}}
