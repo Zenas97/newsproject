@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project app</title>
+        <style>
+            .form_input{
+                margin-top: 10px;
+            }
+
+            #submit_button{
+                margin-top: 20px;
+                width: 100px;
+                height: 25px;
+            }
+
+            .error{
+                color:Red;
+            }
+
+            .success{
+                color:green;
+            }
+        </style>
+    </head>
+    <body>
+        <h1> News App</h1>
+           	<div class = "form_input"> 
+                <div>Titolo Articolo  </div>
+                <input type="text" name="titolo" value=""/>
+                <span id="titolo" class = "error"> </span>
+            </div>
+            <div class = "form_input"> 
+                <div> Autore </div>
+                <input type="text" name="autore" value= ""/>
+                <span id="autore" class = "error"> </span>
+            </div>
+            <div class = "form_input"> 
+                <div> Testo articolo </div>
+                <textarea name="testo" rows="25" cols="85"></textarea>
+                <span id="testo" class = "error"> </span>
+            </div>
+            <div class = "form_input">
+                <div> Data </div>
+                <input type="date" name="data" value=""/>
+                <span id="data" class = "error"> </span>
+            </div>
+            
+            <div class = "form_input">
+                <input type="button" value="send" id="submit_button"/>
+            </div>
+
+            <span id = "result" class = "success"> </span>
+            <script>
+                var today = new Date().toISOString();
+                //Get Porzione data odierna
+                today = today.slice(0,today.indexOf("T"));
+                //Setta il time
+                document.querySelector("input[name=data]").value = today;
+
+                document.getElementById("submit_button").addEventListener("click",function(){
+                    resetFields();
+                    var data = getFormData().toJson();
+                    var request = makeRequest(data);
+                    submitRequestAndHandleResponse(request);
+
+                    function makeRequest(data){
+                        return  fetch("http://localhost:8080/articoli",{
+                            method: "POST",
+                            mode: "cors",
+                            headers:{
+                                "Content-Type": "application/json"
+                            },
+                            body:data
+                        });
+                    }
+
+                    function submitRequestAndHandleResponse(request){
+                        request.then(response => {
+                            if(response.status == 400) handleFailure(response.json());
+                            else handleSuccess(response.headers);
+                        });
+                    }
+
+                    function handleFailure(data){
+ 
+                        data.then(body => {
+                            for(key in body) document.getElementById(key).innerText = "*" + body[key];
+                        });
+                    }
+
+                    function handleSuccess(headers){
+                        var url;
+                        for(var x of headers.entries()) if(x[0] == "location") url = x[1];
+                        document.getElementById("result").innerHTML = "Articoli inviato con successo \n\n URL: " + 
+                        "<a href=" + x[1] + ">"+ x[1] + "</a>";
+                    }
+                });
+
+
+                function resetFields(){
+                    document.getElementById("result").innerHTML = "";
+                    document.getElementById("data").innerHTML = "";
+                    document.getElementById("testo").innerHTML = "";
+                    document.getElementById("titolo").innerHTML = "";
+                    document.getElementById("autore").innerHTML = "";
+                }
+
+                function getFormData(){
+                        var dataObject = {
+                            titolo:document.querySelector("input[name=titolo]").value,
+                            testo:document.querySelector("textarea[name=testo]").value,
+                            autore:document.querySelector("input[name=autore]").value,
+                            data:document.querySelector("input[name=data]").value
+                        }
+
+                        for(key in dataObject){
+                            dataObject[key] = dataObject[key].trim();
+                        }
+
+                        var interface = {
+                            toJson:function(){
+                                return JSON.stringify(dataObject);
+                            }
+                        }
+                        return interface;
+                }
+
+
+            </script>
+    </body>
+</html>

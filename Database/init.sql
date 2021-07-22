@@ -3,8 +3,5 @@ CREATE TABLE `articoli` (
 	`autore` VARCHAR(255),
 	`titolo` TEXT,
 	`testo` TEXT,
-	`data` DATE,
-	`stato` BOOLEAN,
-	`predizione` DOUBLE,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;

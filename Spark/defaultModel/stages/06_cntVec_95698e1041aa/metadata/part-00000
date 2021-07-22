@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.CountVectorizerModel","timestamp":1626917281095,"sparkVersion":"3.1.2","uid":"cntVec_95698e1041aa","paramMap":{"outputCol":"textVector","inputCol":"textTrigrams"},"defaultParamMap":{"outputCol":"cntVec_95698e1041aa__output","maxDF":9.223372036854776E18,"vocabSize":262144,"binary":false,"minDF":1.0,"minTF":1.0}}

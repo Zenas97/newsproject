@@ -27,10 +27,6 @@ public class Articoli {
 	@NotEmpty(message = "Inserire testo")
 	@Column(columnDefinition = "TEXT")
 	private String testo;
-	@NotNull
-	private LocalDate data;
-	private boolean stato;
-	private double predizione;
 	
 	
 	public Articoli() {
@@ -61,28 +57,10 @@ public class Articoli {
 	public void setTesto(String testo) {
 		this.testo = testo;
 	}
-	public LocalDate getData() {
-		return data;
-	}
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-	public boolean isStato() {
-		return stato;
-	}
-	public void setStato(boolean stato) {
-		this.stato = stato;
-	}
-	public double getPredizione() {
-		return predizione;
-	}
-	public void setPredizione(double predizione) {
-		this.predizione = predizione;
-	}
+
 	@Override
 	public String toString() {
-		return "Articoli [id=" + id + ", autore=" + autore + ", titolo=" + titolo + ", testo=" + testo + ", data="
-				+ data + ", stato=" + stato + ", predizione=" + predizione + "]";
+		return "Articoli [id=" + id + ", autore=" + autore + ", titolo=" + titolo + ", testo=" + testo + "]";
 	}
 	
 	

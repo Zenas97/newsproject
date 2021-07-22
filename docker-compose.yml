@@ -1,15 +1,20 @@
 version: "1.0"
 services:
-    frontend:
+    web:
         build:
             context: ./Web
-        container_name: frontend
-        hostname: frontend
+        container_name: web
+        hostname: webHost
         user: root
         ports:
             - 8080:8080
+        volumes: 
+            - type: bind
+              source: ./Web/newsproject/target
+              target: /app
     db:
-        image: diego/database:latest
+        build:
+            context: ./Database
         container_name: database
         hostname: dbHost
         user: root
@@ -20,7 +25,6 @@ services:
             MYSQL_USER: admin
             MYSQL_PASSWORD: admin
             MYSQL_DATABASE: newsproject
-
         volumes:
             - type: volume
               source: db-volume
@@ -54,6 +58,7 @@ services:
             - type: volume
               source: logstash-volume
               target: /usr/share/logstash/jdbc_info 
+
     zookeeper:
         image: bitnami/zookeeper:latest
         user: root
@@ -97,13 +102,15 @@ services:
               target: /bitnami/kafka  
 
     spark-streaming:
-        image: diego/spark
+        build:
+            context: ./Spark
         container_name: spark-streaming
         hostname: sparkHost
         user: root
         depends_on: 
             - kafka
             - elasticSearch
+        command: ./spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2,org.elasticsearch:elasticsearch-spark-30_2.12:7.13.3 --class newsproject.Main /opt/bitnami/spark/program/program.jar
         ports:
             - 4040:4040
         volumes:
@@ -115,12 +122,14 @@ services:
               target: /opt/bitnami/spark/model
 
     spark-training:
-        image: diego/spark
+        build:
+            context: ./Spark
         container_name: spark-training
         hostname: sparkHostTraining
         user: root
         depends_on: 
             - kafka
+        command: ./spark-submit --class newsproject.Main /opt/bitnami/spark/program/program.jar
         ports:
             - 4041:4040
         volumes:
@@ -138,6 +147,7 @@ services:
         user: root
         environment: 
             - discovery.type=single-node
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
         ports:
             - 9200:9200
             - 9300:9300
@@ -155,6 +165,18 @@ services:
             - elasticSearch
         ports:
             - 5601:5601
+    copy-default-model:
+        image: debian
+        container_name: default-model-copy-container
+        volumes:
+            - type: volume
+              source: spark-model-volume
+              target: /model    
+            - type: bind
+              source: ./Spark/defaultModel
+              target: /temp
+        command: cp -r /temp/. /model      
+
 volumes:
     zookeeper-volume:
         name: zookeeper-volume
@@ -162,7 +184,6 @@ volumes:
         name: kafka-volume
     spark-model-volume:
         name: spark-model-volume
-        external: true
     elasticsearch-volume:
         name: elasticsearch-volume
     logstash-volume:
