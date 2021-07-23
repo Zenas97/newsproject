@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.NGram","timestamp":1626917281001,"sparkVersion":"3.1.2","uid":"ngram_ffe33d3bb88f","paramMap":{"n":3,"outputCol":"titleTrigrams","inputCol":"tokenizedTitleNoStopWords"},"defaultParamMap":{"n":2,"outputCol":"ngram_ffe33d3bb88f__output"}}

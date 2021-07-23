@@ -1,7 +1,7 @@
-D:\TAPProject - Copia - Copia\Spark\newsproject\src\main\java\spark\FakeNewsTraining.java
-D:\TAPProject - Copia - Copia\Spark\newsproject\src\main\java\spark\SparkStreamingKafkaDataProvider.java
-D:\TAPProject - Copia - Copia\Spark\newsproject\src\main\java\spark\FakeNewsStreaming.java
-D:\TAPProject - Copia - Copia\Spark\newsproject\src\main\java\newsproject\Main.java
-D:\TAPProject - Copia - Copia\Spark\newsproject\src\main\java\exception\ModelNotFoundException.java
-D:\TAPProject - Copia - Copia\Spark\newsproject\src\main\java\spark\SparkTrainingJsonDataProvider.java
-D:\TAPProject - Copia - Copia\Spark\newsproject\src\main\java\spark\DataProvider.java
+D:\TAPProject\newsproject\Spark\newsproject\src\main\java\spark\FakeNewsStreaming.java
+D:\TAPProject\newsproject\Spark\newsproject\src\main\java\exception\ModelNotFoundException.java
+D:\TAPProject\newsproject\Spark\newsproject\src\main\java\spark\DataProvider.java
+D:\TAPProject\newsproject\Spark\newsproject\src\main\java\spark\FakeNewsTraining.java
+D:\TAPProject\newsproject\Spark\newsproject\src\main\java\spark\SparkStreamingKafkaDataProvider.java
+D:\TAPProject\newsproject\Spark\newsproject\src\main\java\newsproject\Main.java
+D:\TAPProject\newsproject\Spark\newsproject\src\main\java\spark\SparkTrainingJsonDataProvider.java

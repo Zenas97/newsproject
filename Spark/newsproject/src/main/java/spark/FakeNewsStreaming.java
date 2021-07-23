@@ -10,15 +10,11 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.functions;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.types.DataTypes;
-import org.apache.spark.sql.types.StructField;
-import org.apache.spark.sql.types.StructType;
 import org.apache.spark.sql.expressions.UserDefinedFunction;
 import static org.apache.spark.sql.functions.udf;
 import org.apache.spark.ml.linalg.Vector;
-import org.apache.spark.mllib.linalg.VectorUDT;
 
 import exception.ModelNotFoundException;
-import shapeless.newtype;
 
 public class FakeNewsStreaming {
 	

@@ -1,11 +1,8 @@
 package spark;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.apache.avro.data.Json;
 import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
@@ -13,22 +10,14 @@ import org.apache.spark.ml.classification.LogisticRegression;
 import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator;
 import org.apache.spark.ml.feature.CountVectorizer;
 import org.apache.spark.ml.feature.NGram;
-import org.apache.spark.ml.feature.OneHotEncoder;
 import org.apache.spark.ml.feature.StopWordsRemover;
-import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.feature.Tokenizer;
 import org.apache.spark.ml.feature.VectorAssembler;
-import org.apache.spark.ml.feature.VectorIndexer;
 import org.apache.spark.ml.feature.Word2Vec;
-import org.apache.spark.ml.param.ParamMap;
-import org.apache.spark.ml.tuning.ParamGridBuilder;
-import org.apache.spark.ml.tuning.TrainValidationSplit;
-import org.apache.spark.ml.tuning.TrainValidationSplitModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.functions;
-import org.apache.spark.storage.StorageLevel;
 
 public class FakeNewsTraining 
 {
@@ -62,13 +51,13 @@ public class FakeNewsTraining
 		Tokenizer tokenizeTitle = getTokenizer("title", "tokenizedTitle");	
 		
 		StopWordsRemover removeTokenizedTextStopWords = getEnglishStopWordRemover("tokenizedText", "tokenizedTextNoStopWords");
-		StopWordsRemover removeTokenizedTitleStopWords = getEnglishStopWordRemover("tokenizedText", "tokenizedTitleNoStopWords");
-	
-		NGram textTrigrams = getTrigram("tokenizedTextNoStopWords", "textTrigrams");
-		NGram titleTrigrams = getTrigram("tokenizedTitleNoStopWords", "titleTrigrams");
-		
-		CountVectorizer textVectorizer = getVectorizer("textTrigrams", "textVector");
-		CountVectorizer titleVectorizer = getVectorizer("titleTrigrams", "titleVector");
+		StopWordsRemover removeTokenizedTitleStopWords = getEnglishStopWordRemover("tokenizedTitle", "tokenizedTitleNoStopWords");
+
+		Word2Vec w2vText = new Word2Vec();
+		w2vText.setInputCol("tokenizedTextNoStopWords").setOutputCol("textVector").setVectorSize(100);
+
+		Word2Vec w2vTitle = new Word2Vec();
+		w2vTitle.setInputCol("tokenizedTitleNoStopWords").setOutputCol("titleVector").setVectorSize(10);
 		
 		VectorAssembler vectorAssembler = getVectorAssembler(new String[]{"textVector","titleVector"},"features");
 		
@@ -77,7 +66,7 @@ public class FakeNewsTraining
 		
 		//Training Phase
 		PipelineStage[] trainingPipelineStages = new PipelineStage[]{tokenizeText,tokenizeTitle,removeTokenizedTextStopWords,removeTokenizedTitleStopWords,
-				textTrigrams,titleTrigrams,textVectorizer,titleVectorizer,vectorAssembler,logisticRegression};
+				w2vText,w2vTitle,vectorAssembler,logisticRegression};
 		
 		PipelineModel fittedModel = trainModel(trainingSet,trainingPipelineStages);
 		

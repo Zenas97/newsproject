@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.Tokenizer","timestamp":1627010398980,"sparkVersion":"3.1.2","uid":"tok_75e02e1239c3","paramMap":{"outputCol":"tokenizedTitle","inputCol":"title"},"defaultParamMap":{"outputCol":"tok_75e02e1239c3__output"}}
